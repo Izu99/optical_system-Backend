@@ -1,6 +1,6 @@
 from jose import JWTError, jwt
 
-SECRET_KEY = "your_secret"  # Replace with the actual key used during encoding
+SECRET_KEY = "your_secret_key"  # Replace with the actual key used during encoding
 ALGORITHM = "HS256"
 
 def decode_token(token: str) -> dict:
@@ -12,7 +12,8 @@ def decode_token(token: str) -> dict:
         raise
 
 if __name__ == "__main__":
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2MCwicm9sZSI6Im93bmVyIiwiZXhwIjoxNzIzMjU4MzIwfQ.VGGYgiMc--wcUjde0ky7je5yRYEu2gzLp3hNCKd67AM"
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2MCwicm9sZSI6Im93bmVyIiwiZXhwIjoxNzIzMjYxODczfQ.qIiRNqMopnVMvLB487AHzcVWLYAMypi2ulbeg7VYnoQ"
+    
     
     try:
         decoded_data = decode_token(token)
@@ -24,4 +25,3 @@ if __name__ == "__main__":
             print("Role is not present in the token.")
     except JWTError as e:
         print(f"Error decoding token: {e}")
-
