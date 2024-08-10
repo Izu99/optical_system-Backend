@@ -1,8 +1,11 @@
+# app/crud/user.py
+
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from app.models.user import User, UserRole
 from app.models.branch import Branch
 from app.schemas.user import UserCreate, UserUpdate
+from app.auth.security import hash_password  # Ensure this import is correct
 
 def create_user(db: Session, user: UserCreate):
     # Check if the branch exists
@@ -20,8 +23,16 @@ def create_user(db: Session, user: UserCreate):
         if existing_user:
             raise ValueError(f"A user with the role {user.role} already exists in branch {user.branch_id}.")
     
+    # Hash the password before saving it
+    hashed_password = hash_password(user.password)
+    
     # Create and add the new user
-    db_user = User(**user.dict())
+    db_user = User(
+        email=user.email,
+        password=hashed_password,  # Save hashed password
+        role=user.role,
+        branch_id=user.branch_id
+    )
     db.add(db_user)
     try:
         db.commit()
@@ -45,6 +56,8 @@ def update_user(db: Session, user_id: int, user: UserUpdate):
     db_user = db.query(User).filter(User.user_id == user_id).first()
     if db_user:
         for key, value in user.dict(exclude_unset=True).items():
+            if key == "password" and value:  # Hash password if it's being updated
+                value = hash_password(value)
             setattr(db_user, key, value)
         db.add(db_user)
         db.commit()
