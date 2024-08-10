@@ -13,6 +13,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     role: str  # Add role to the token schema
+    branch_id: int
 
 
 class TokenData(BaseModel):

@@ -3,7 +3,7 @@ from app.models import Base
 from app.database import engine
 from app.routers import (
     shops, branches, users, customers, frames, lenses, 
-    prescriptions, billings, billing_items, payments
+    prescriptions, billings, billing_items, payments, dashboard
 )
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth.routers import router as auth_router  # Import the auth router
@@ -33,6 +33,7 @@ app.include_router(prescriptions.router, prefix="/api/prescriptions", tags=["pre
 app.include_router(billings.router, prefix="/api/billings", tags=["billings"])
 app.include_router(billing_items.router, prefix="/api/billing_items", tags=["billing_items"])
 app.include_router(payments.router, prefix="/api/payments", tags=["payments"])
+app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboarrd"])
 
 # Include the auth router
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
