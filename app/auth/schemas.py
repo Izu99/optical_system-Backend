@@ -14,6 +14,7 @@ class Token(BaseModel):
     token_type: str
     role: str  # Add role to the token schema
     branch_id: int
+    shop_id: int
 
 
 class TokenData(BaseModel):

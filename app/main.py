@@ -33,7 +33,7 @@ app.include_router(prescriptions.router, prefix="/api/prescriptions", tags=["pre
 app.include_router(billings.router, prefix="/api/billings", tags=["billings"])
 app.include_router(billing_items.router, prefix="/api/billing_items", tags=["billing_items"])
 app.include_router(payments.router, prefix="/api/payments", tags=["payments"])
-app.include_router(dashboard.router, prefix="/dashboard", tags=["dashboarrd"])
+app.include_router(dashboard.router, prefix="/api/dashboard", tags=["dashboard"])
 
 # Include the auth router
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])

@@ -1,47 +1,42 @@
-# app/crud/customer.py
+# app/crud/lab_equipment.py
 
 from sqlalchemy.orm import Session
-from app.models.customer import Customer
-from app.models.branch import Branch
-from app.schemas.customer import CustomerCreate, CustomerUpdate
+from app.models.lab_equipment import LabEquipment
+from app.schemas.lab_equipment import LabEquipmentCreate, LabEquipmentUpdate
 
 
-def create_customer(db: Session, customer: CustomerCreate):
-    branch_exists = db.query(Branch).filter(
-        Branch.branch_id == customer.branch_id).first()
-    if not branch_exists:
-        raise ValueError("The specified branch does not exist.")
-    db_customer = Customer(**customer.dict())
-    db.add(db_customer)
+def create_lab_equipment(db: Session, equipment: LabEquipmentCreate):
+    db_equipment = LabEquipment(**equipment.dict())
+    db.add(db_equipment)
     db.commit()
-    db.refresh(db_customer)
-    return db_customer
+    db.refresh(db_equipment)
+    return db_equipment
 
 
-def get_customer(db: Session, customer_id: int):
-    return db.query(Customer).filter(Customer.customer_id == customer_id).first()
+def get_lab_equipment(db: Session, equipment_id: int):
+    return db.query(LabEquipment).filter(LabEquipment.equipment_id == equipment_id).first()
 
 
-def get_customers(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(Customer).offset(skip).limit(limit).all()
+def get_lab_equipments(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(LabEquipment).offset(skip).limit(limit).all()
 
 
-def update_customer(db: Session, customer_id: int, customer: CustomerUpdate):
-    db_customer = db.query(Customer).filter(
-        Customer.customer_id == customer_id).first()
-    if db_customer is None:
+def update_lab_equipment(db: Session, equipment_id: int, equipment: LabEquipmentUpdate):
+    db_equipment = db.query(LabEquipment).filter(
+        LabEquipment.equipment_id == equipment_id).first()
+    if db_equipment is None:
         return None
-    for key, value in customer.dict(exclude_unset=True).items():
-        setattr(db_customer, key, value)
+    for key, value in equipment.dict(exclude_unset=True).items():
+        setattr(db_equipment, key, value)
     db.commit()
-    db.refresh(db_customer)
-    return db_customer
+    db.refresh(db_equipment)
+    return db_equipment
 
 
-def delete_customer(db: Session, customer_id: int):
-    db_customer = db.query(Customer).filter(
-        Customer.customer_id == customer_id).first()
-    if db_customer:
-        db.delete(db_customer)
+def delete_lab_equipment(db: Session, equipment_id: int):
+    db_equipment = db.query(LabEquipment).filter(
+        LabEquipment.equipment_id == equipment_id).first()
+    if db_equipment:
+        db.delete(db_equipment)
         db.commit()
-    return db_customer
+    return db_equipment

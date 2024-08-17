@@ -12,9 +12,8 @@ def decode_token(token: str) -> dict:
         raise
 
 if __name__ == "__main__":
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2MCwicm9sZSI6Im93bmVyIiwiZXhwIjoxNzIzMjYxODczfQ.qIiRNqMopnVMvLB487AHzcVWLYAMypi2ulbeg7VYnoQ"
-    
-    
+    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo2MCwicm9sZSI6Im93bmVyIiwiYnJhbmNoX2lkIjoxNiwic2hvcF9pZCI6MiwiZXhwIjoxNzIzMzc2NTY2fQ.a9mz-DF5AR9i3ikJxfDoVs1fOZXZZ1sWlCZkh-KE7BE"
+
     try:
         decoded_data = decode_token(token)
         print(f"Decoded token data: {decoded_data}")

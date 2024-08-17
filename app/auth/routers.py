@@ -12,28 +12,29 @@ router = APIRouter()
 @router.post("/login", response_model=Token)
 def login_for_access_token(user_login: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == user_login.email).first()
-
     if user and verify_password(user_login.password, user.password):
-        # Query the branch_id associated with the user
-        branch = db.query(Branch).filter(Branch.branch_id == user.branch_id).first()
-
-        if not branch:
-            raise HTTPException(status_code=404, detail="Branch not found for the user")
-
-        # Prepare the data to include in the token
-        token_data = {"user_id": user.user_id, "role": user.role, "branch_id": user.branch_id}
-        # Create the token with the data
+        branch = user.branch  # Access the branch relationship
+        shop_id = branch.shop_id  # Get the shop_id from the branch
+        
+        token_data = {
+            "user_id": user.user_id,
+            "role": user.role,
+            "branch_id": user.branch_id,
+            "shop_id": shop_id  # Add shop_id to the token data
+        }
         token = create_access_token(data=token_data)
-
+        
         return {
             "access_token": token,
             "token_type": "bearer",
-            "role": user.role  # Include the role in the response,
-            "branch_id": user.branch_id
-
+            "role": user.role,
+            "branch_id": user.branch_id,
+            "shop_id": shop_id  # Return shop_id in the response
         }
     else:
         raise HTTPException(status_code=401, detail="Invalid credentials")
+
+
     
 @router.get("/owner", response_model=str)
 def owner_page(current_user: User = Depends(lambda: get_current_user_role("owner"))):
