@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ensure these come AFTER the @tailwind directives */
+body {
+  @apply bg-gray-900 text-gray-100;
+  /* You can add other global styles here if needed, like font-family */
+  /* font-family: 'Inter', sans-serif; /* Example font */
+}
