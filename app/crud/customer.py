@@ -1,42 +1,34 @@
-# app/crud/lab_equipment.py
-
 from sqlalchemy.orm import Session
-from app.models.lab_equipment import LabEquipment
-from app.schemas.lab_equipment import LabEquipmentCreate, LabEquipmentUpdate
+from app.models.customer import Customer
+from app.schemas.customer import CustomerCreate, CustomerUpdate
 
+def get_customer(db: Session, customer_id: int):
+    return db.query(Customer).filter(Customer.customer_id == customer_id).first()
 
-def create_lab_equipment(db: Session, equipment: LabEquipmentCreate):
-    db_equipment = LabEquipment(**equipment.dict())
-    db.add(db_equipment)
+def get_customers(db: Session, skip: int = 0, limit: int = 10):
+    return db.query(Customer).offset(skip).limit(limit).all()
+
+def create_customer(db: Session, customer: CustomerCreate):
+    db_customer = Customer(**customer.dict())
+    db.add(db_customer)
     db.commit()
-    db.refresh(db_equipment)
-    return db_equipment
+    db.refresh(db_customer)
+    return db_customer
 
-
-def get_lab_equipment(db: Session, equipment_id: int):
-    return db.query(LabEquipment).filter(LabEquipment.equipment_id == equipment_id).first()
-
-
-def get_lab_equipments(db: Session, skip: int = 0, limit: int = 10):
-    return db.query(LabEquipment).offset(skip).limit(limit).all()
-
-
-def update_lab_equipment(db: Session, equipment_id: int, equipment: LabEquipmentUpdate):
-    db_equipment = db.query(LabEquipment).filter(
-        LabEquipment.equipment_id == equipment_id).first()
-    if db_equipment is None:
+def update_customer(db: Session, customer_id: int, customer_update: CustomerUpdate):
+    db_customer = get_customer(db, customer_id)
+    if not db_customer:
         return None
-    for key, value in equipment.dict(exclude_unset=True).items():
-        setattr(db_equipment, key, value)
+    for key, value in customer_update.dict(exclude_unset=True).items():
+        setattr(db_customer, key, value)
     db.commit()
-    db.refresh(db_equipment)
-    return db_equipment
+    db.refresh(db_customer)
+    return db_customer
 
-
-def delete_lab_equipment(db: Session, equipment_id: int):
-    db_equipment = db.query(LabEquipment).filter(
-        LabEquipment.equipment_id == equipment_id).first()
-    if db_equipment:
-        db.delete(db_equipment)
-        db.commit()
-    return db_equipment
+def delete_customer(db: Session, customer_id: int):
+    db_customer = get_customer(db, customer_id)
+    if not db_customer:
+        return None
+    db.delete(db_customer)
+    db.commit()
+    return db_customer

@@ -5,6 +5,9 @@ from app.routers import (
     shops, branches, users, customers, frames, lenses, 
     prescriptions, billings, billing_items, payments, dashboard
 )
+
+from app.models import shop, branch, user, customer, frame, lens, prescription, billing, billing_item, payment
+
 from fastapi.middleware.cors import CORSMiddleware
 from app.auth.routers import router as auth_router  # Import the auth router
 
